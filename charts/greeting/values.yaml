@@ -1,0 +1,15 @@
+persistence:
+  postgresql:
+    secretRef:
+      name: sonataflow-psql-postgresql
+      userKey: postgres-username
+      passwordKey: postgres-password
+    serviceRef:
+      name: sonataflow-psql-postgresql
+      port: 5432
+      databaseName: sonataflow
+      databaseSchema: greeting
+
+image: 
+  repository: quay.io/redhat_pe_workshop/serverless-workflow-greeting
+  tag: ecd5517
