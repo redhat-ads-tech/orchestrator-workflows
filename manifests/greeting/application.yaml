@@ -11,7 +11,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: default
   source:
-    repoURL: https://{{ gitlab_host }}/rhdh/orchestrator-workflows
+    repoURL: https://{{ gitlab_host }}/rhdh/orchestrator-workflows.git
     path: charts/greeting
     targetRevision: main
     helm:
