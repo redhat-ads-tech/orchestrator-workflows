@@ -1,0 +1,18 @@
+persistence:
+  postgresql:
+    secretRef:
+      name: sonataflow-psql-postgresql
+      userKey: database-user
+      passwordKey: database-password
+    serviceRef:
+      name: sonataflow-psql-postgresql
+      port: 5432
+      databaseName: sonataflow
+      databaseSchema: create-ocp-namespace
+
+image: 
+  repository: quay.io/btison/serverless-workflow-create-ocp-namespace
+  tag: work6
+
+ticketManager:
+  url: 
