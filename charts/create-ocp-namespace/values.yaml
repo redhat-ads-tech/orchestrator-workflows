@@ -12,7 +12,11 @@ persistence:
 
 image: 
   repository: quay.io/btison/serverless-workflow-create-ocp-namespace
-  tag: work6
+  tag: work9
 
 ticketManager:
-  url: 
+  url:
+
+secret:
+  openshiftToken: orchestrator-ocp-token
+  notification: orchestrator-notification-token

@@ -26,6 +26,15 @@ spec:
       - name: closeTicket
         operation: specs/ticket-manager-openapi.yaml#transitionTicket
         type: rest
+      - name: createCoreV1Namespace
+        operation: specs/ocp-namespace-openapi.yaml#createCoreV1Namespace
+        type: rest
+      - name: readCoreV1Namespace
+        operation: specs/ocp-namespace-openapi.yaml#readCoreV1Namespace
+        type: rest
+      - name: createNotification
+        operation: notifications#createNotification
+        type: rest
       - name: sysoutFunction
         operation: sysout
         type: custom
@@ -57,14 +66,6 @@ spec:
               invoke: sync
               refName: createTicket
             name: Create Ticket
-          - actionDataFilter:
-              useResults: true
-            functionRef:
-              arguments:
-                message: .createTicketResult
-              invoke: sync
-              refName: sysoutFunction
-            name: sysoutNotification
         name: Open Ticket for Operations
         transition:
           nextState: 'Create Notification: Ticket Created'
@@ -75,10 +76,18 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                message: 'Notification: ticket created'
+                payload:
+                  description: Ticket created
+                  link: $SECRET.ticket_manager_url + "/rest/api/v1/ticket/" + .createTicketResult.id
+                  severity: normal
+                  title: Ticket created
+                  topic: Create OCP Namespace workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
               invoke: sync
-              refName: sysoutFunction
-            name: sysoutNotification
+              refName: createNotification
+            name: 'Create notification: ticket created'
         name: 'Create Notification: Ticket Created'
         transition:
           nextState: Poll Ticket
@@ -120,9 +129,16 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                message: '"Create OCP Namespace" + .namespace'
+                kind: Namespace
+                metadata:
+                  labels:
+                    kubernetes.io/metadata.name: .namespace
+                  name: .namespace
+                spec:
+                  finalizers:
+                    - kubernetes
               invoke: sync
-              refName: sysoutFunction
+              refName: createCoreV1Namespace
             name: Create OCP Namespace
         name: Create Namespace
         transition:
@@ -131,12 +147,13 @@ spec:
       - actionMode: sequential
         actions:
           - actionDataFilter:
+              toStateData: .namespaceObject
               useResults: true
             functionRef:
               arguments:
-                message: '"Get OCP Namespace resource" + .namespace'
+                name: .namespace
               invoke: sync
-              refName: sysoutFunction
+              refName: readCoreV1Namespace
             name: Get created namespace
             sleep:
               before: PT10S
@@ -158,17 +175,11 @@ spec:
             name: Close ticket
         name: Close ticket
         transition:
-          nextState: '[TEMP] Namespace status inject'
-        type: operation
-      - data:
-          namespaceStatus: Active
-        name: '[TEMP] Namespace status inject'
-        transition:
           nextState: 'Post operation: check namespace resource created successfully'
-        type: inject
+        type: operation
       - dataConditions:
-          - condition: .namespaceStatus == "Active"
-            name: Project Active
+          - condition: .namespaceObject.status.phase == "Active"
+            name: Namespace Active
             transition:
               nextState: Notify namespace active
         defaultCondition:
@@ -182,10 +193,17 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                message: 'Notification: namespace active'
+                payload:
+                  description: '"Namespace " + .namespace + " active"'
+                  severity: normal
+                  title: '"Namespace " + .namespace + " active"'
+                  topic: Create OCP Namespace workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
               invoke: sync
-              refName: sysoutFunction
-            name: 'Create notification: namespace active'
+              refName: createNotification
+            name: 'Create notification: project active'
           - actionDataFilter:
               useResults: true
             functionRef:
@@ -202,9 +220,16 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                message: 'Notification: namespace inactive'
+                payload:
+                  description: '"Namespace " + .namespace + " inactive"'
+                  severity: high
+                  title: '"Namespace " + ..namespace + " inactive"'
+                  topic: Create OCP Namespace workflow
+                recipients:
+                  entityRef: .recipients
+                  type: entity
               invoke: sync
-              refName: sysoutFunction
+              refName: createNotification
             name: 'Create notification: namespace not active'
           - actionDataFilter:
               useResults: true
@@ -249,6 +274,10 @@ spec:
       envFrom:
         - secretRef:
             name: create-ocp-namespace-creds
+        - secretRef:
+            name: {{ .Values.secret.openshiftToken }}
+        - secretRef:
+            name: {{ .Values.secret.notification }}
   resources:
     configMaps:
       - configMap:

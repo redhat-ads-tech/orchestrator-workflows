@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: orchestrator-workflow-greeting
+  name: orchestrator-workflow-create-ocp-namespace
   namespace: openshift-gitops
   finalizers:
     - resources-finalizer.argocd.argoproj.io/foreground
@@ -12,7 +12,7 @@ spec:
   project: default
   source:
     repoURL: https://{{ gitlab_host }}/rhdh/orchestrator-workflows.git
-    path: charts/greeting
+    path: charts/create-ocp-namespace
     targetRevision: main
     helm:
       values: |
@@ -26,6 +26,8 @@ spec:
               name: sonataflow-psql-postgresql
               port: 5432
               databaseName: sonataflow
-              databaseSchema: greeting
+              databaseSchema: create-ocp-namespace
+        ticketManager:
+          url: https://ticket-manager-{{ orchestrator_namespace }}.{{ cluster_subdomain }}
   syncPolicy:
     automated: {}
