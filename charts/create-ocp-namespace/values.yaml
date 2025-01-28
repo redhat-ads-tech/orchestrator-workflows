@@ -11,8 +11,8 @@ persistence:
       databaseSchema: create-ocp-namespace
 
 image: 
-  repository: quay.io/btison/serverless-workflow-create-ocp-namespace
-  tag: work9
+  repository: quay.io/redhat_pe_workshop/serverless-workflow-create-ocp-namespace
+  tag: 4a1bcaf
 
 ticketManager:
   url:
