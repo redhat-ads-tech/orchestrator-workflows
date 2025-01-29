@@ -32,6 +32,9 @@ spec:
       - name: readCoreV1Namespace
         operation: specs/ocp-namespace-openapi.yaml#readCoreV1Namespace
         type: rest
+      - name: createRbacAuthorizationV1NamespacedRoleBinding
+        operation: specs/ocp-rolebinding-openapi.yaml#createRbacAuthorizationV1NamespacedRoleBinding
+        type: rest
       - name: createNotification
         operation: notifications#createNotification
         type: rest
@@ -181,12 +184,39 @@ spec:
           - condition: .namespaceObject.status.phase == "Active"
             name: Namespace Active
             transition:
-              nextState: Notify namespace active
+              nextState: Create rolebinding for namespace requester
         defaultCondition:
           transition:
             nextState: Notify namespace not active
         name: 'Post operation: check namespace resource created successfully'
         type: switch
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              useResults: true
+            functionRef:
+              arguments:
+                apiVersion: rbac.authorization.k8s.io/v1
+                kind: RoleBinding
+                metadata:
+                  name: .openshiftUser + "-edit"
+                  namespace: .namespace
+                namespace: .namespace
+                roleRef:
+                  apiGroup: rbac.authorization.k8s.io
+                  kind: ClusterRole
+                  name: edit
+                subjects:
+                  - apiGroup: rbac.authorization.k8s.io
+                    kind: User
+                    name: .openshiftUser
+              invoke: sync
+              refName: createRbacAuthorizationV1NamespacedRoleBinding
+            name: Create rolebinding
+        name: Create rolebinding for namespace requester
+        transition:
+          nextState: Notify namespace active
+        type: operation
       - actionMode: sequential
         actions:
           - actionDataFilter:

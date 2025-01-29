@@ -13,6 +13,12 @@ data:
           "type": "string",
           "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
         },
+        "openshiftUser": {
+          "title": "OpenShift User Name",
+          "description": "OpenShift username of requester",
+          "type": "string",
+          "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
+        },
         "recipients": {
           "title": "Recipients",
           "type": "array",

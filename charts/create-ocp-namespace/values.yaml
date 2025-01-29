@@ -12,7 +12,7 @@ persistence:
 
 image: 
   repository: quay.io/redhat_pe_workshop/serverless-workflow-create-ocp-namespace
-  tag: 4a1bcaf
+  tag: e200ba9
 
 ticketManager:
   url:
