@@ -1,0 +1,24 @@
+persistence:
+  postgresql:
+    secretRef:
+      name: sonataflow-psql-postgresql
+      userKey: database-user
+      passwordKey: database-password
+    serviceRef:
+      name: sonataflow-psql-postgresql
+      port: 5432
+      databaseName: sonataflow
+      databaseSchema: create-ocp-namespace-swt
+
+image: 
+  repository: quay.io/redhat_pe_workshop/swf-create-ocp-namespace-swt
+  tag: latest
+
+ticketManager:
+  url:
+
+backstage:
+  softwareTemplate: 
+
+secret:
+  notification: orchestrator-notification-token
