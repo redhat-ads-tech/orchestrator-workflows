@@ -285,7 +285,7 @@ spec:
         - secretRef:
             name: create-ocp-namespace-swt-creds
         - secretRef:
-            name: {{ .Values.secret.notification }}
+            name: {{ .Values.secret.backstageToken }}
   resources:
     configMaps:
       - configMap:

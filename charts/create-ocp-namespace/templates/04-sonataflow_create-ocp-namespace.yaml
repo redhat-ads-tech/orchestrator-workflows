@@ -307,7 +307,7 @@ spec:
         - secretRef:
             name: {{ .Values.secret.openshiftToken }}
         - secretRef:
-            name: {{ .Values.secret.notification }}
+            name: {{ .Values.secret.backstageToken }}
   resources:
     configMaps:
       - configMap:

@@ -19,4 +19,4 @@ ticketManager:
 
 secret:
   openshiftToken: orchestrator-ocp-token
-  notification: orchestrator-notification-token
+  backstageToken: orchestrator-backstage-backend-token

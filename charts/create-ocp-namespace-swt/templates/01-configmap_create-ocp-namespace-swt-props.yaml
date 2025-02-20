@@ -9,9 +9,9 @@ metadata:
 data:
   application.properties: |
     # Backstage Notifications service
-    rhdh_url=${BACKSTAGE_NOTIFICATIONS_URL}
+    rhdh_url=${BACKSTAGE_BACKEND_URL}
     quarkus.rest-client.notifications.url=${rhdh_url}
-    quarkus.openapi-generator.notifications.auth.BearerToken.bearer-token=${NOTIFICATIONS_BEARER_TOKEN}
+    quarkus.openapi-generator.notifications.auth.BearerToken.bearer-token=${BACKSTAGE_BACKEND_BEARER_TOKEN}
 
     # Ticket Manager
     ticket_manager_url=${TICKET_MANAGER_URL}
@@ -19,7 +19,7 @@ data:
 
     # Backstage Scaffolder service
     quarkus.rest-client.scaffolder_openapi_yaml.url=${rhdh_url}
-    quarkus.openapi-generator.scaffolder_openapi_yaml.auth.BearerToken.bearer-token=${NOTIFICATIONS_BEARER_TOKEN}
+    quarkus.openapi-generator.scaffolder_openapi_yaml.auth.BearerToken.bearer-token=${BACKSTAGE_BACKEND_BEARER_TOKEN}
     software_template_ref=${SOFTWARE_TEMPLATE_REF}
 
     # quarkus.tls.trust-all=true

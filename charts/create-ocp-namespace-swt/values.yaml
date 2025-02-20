@@ -21,4 +21,4 @@ backstage:
   softwareTemplate: 
 
 secret:
-  notification: orchestrator-notification-token
+  backstageToken: orchestrator-backstage-backend-token
