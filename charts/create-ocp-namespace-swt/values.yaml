@@ -12,13 +12,11 @@ persistence:
 
 image: 
   repository: quay.io/redhat_pe_workshop/swf-create-ocp-namespace-swt
-  tag: latest
-
-ticketManager:
-  url:
+  tag: e8648f5
 
 backstage:
   softwareTemplate: 
 
 secret:
   backstageToken: orchestrator-backstage-backend-token
+  gitlabToken: orchestrator-gitlab-token

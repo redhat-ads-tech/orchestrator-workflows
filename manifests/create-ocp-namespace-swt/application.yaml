@@ -27,8 +27,6 @@ spec:
               port: 5432
               databaseName: sonataflow
               databaseSchema: create-ocp-namespace-swt
-        ticketManager:
-          url: https://ticket-manager-{{ orchestrator_namespace }}.{{ cluster_subdomain }}
         backstage:
           softwareTemplate: template:default/namespace-large
   syncPolicy:
