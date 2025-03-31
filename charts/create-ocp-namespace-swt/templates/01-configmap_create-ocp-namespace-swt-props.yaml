@@ -8,20 +8,24 @@ metadata:
   name: create-ocp-namespace-swt-props
 data:
   application.properties: |
-    # Backstage Notifications service
     rhdh_url=${BACKSTAGE_BACKEND_URL}
+    backend_token=${BACKSTAGE_BACKEND_BEARER_TOKEN}
+    gitlab_url=${GITLAB_URL}
+    gitlab_access_token=${GITLAB_TOKEN}
+    
+    # Backstage Notifications service
     quarkus.rest-client.notifications_openapi_yaml.url=${rhdh_url}
-    quarkus.openapi-generator.notifications_openapi_yaml.auth.BearerToken.bearer-token=${BACKSTAGE_BACKEND_BEARER_TOKEN}
+    quarkus.openapi-generator.notifications_openapi_yaml.auth.BearerToken.bearer-token=${backend_token}
 
     # Backstage Scaffolder service
     quarkus.rest-client.scaffolder_openapi_yaml.url=${rhdh_url}
-    quarkus.openapi-generator.scaffolder_openapi_yaml.auth.BearerToken.bearer-token=${BACKSTAGE_BACKEND_BEARER_TOKEN}
-    software_template_ref=${SOFTWARE_TEMPLATE_REF}
+    quarkus.openapi-generator.scaffolder_openapi_yaml.auth.BearerToken.bearer-token=${backend_token}
+    swt_ref_ns_large=${SWT_REF_NS_LARGE}
+    swt_ref_ns_small=${SWT_REF_NS_SMALL}
 
     # Gitlab
-    gitlab_url=${GITLAB_URL}
     quarkus.rest-client.gitlab_openapi_yaml.url=${gitlab_url}
-    quarkus.openapi-generator.gitlab_openapi_yaml.auth.access_token_header.api-key=${GITLAB_TOKEN}
+    quarkus.openapi-generator.gitlab_openapi_yaml.auth.access_token_header.api-key=${gitlab_access_token}
  
     # quarkus.tls.trust-all=true
 

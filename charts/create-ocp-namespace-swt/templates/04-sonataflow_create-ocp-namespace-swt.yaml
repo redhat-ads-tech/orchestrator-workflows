@@ -45,7 +45,7 @@ spec:
         operation: '{ "result": { "outputs":[ { "key":"Component in Catalog", "value": $SECRET.rhdh_url + "/catalog/default/component/" + .component.repoName, "format":"link" }] } }'
         type: expression
       - name: templateErrorResult
-        operation: '{ "result": { "completedWith":"error", "message": "Launching software template " + $SECRET.software_template_ref + " failed.", "outputs":[] } }'
+        operation: '{ "result": { "completedWith":"error", "message": "Launching software template failed.", "outputs":[] } }'
         type: expression
       - name: successResult
         operation: '{ "result": { "message": "Namespace " + .namespace + " active", "outputs":[] } }'
@@ -57,8 +57,22 @@ spec:
         operation: '{ "result": { "message": "Creation of namespace " + .namespace + " denied", "outputs":[ { "key":"Issue", "value": .createIssueResult.web_url, "format":"link" }] } }'
         type: expression
     start:
-      stateName: GetGitlabProjectId
+      stateName: NamespaceSizeSwitch
     states:
+      - dataConditions:
+          - condition: .size == "small"
+            name: Namespace small
+            transition:
+              nextState: LaunchSoftwareTemplateSmall
+          - condition: .size == "large"
+            name: Namespace large
+            transition:
+              nextState: GetGitlabProjectId
+        defaultCondition:
+          transition:
+            nextState: LaunchSoftwareTemplateSmall
+        name: NamespaceSizeSwitch
+        type: switch
       - actionMode: sequential
         actions:
           - actionDataFilter:
@@ -140,7 +154,7 @@ spec:
           - condition: (.getIssueResult.labels|length > 0) and (.getIssueResult.labels[0] == "approved")
             name: Resource request authorized
             transition:
-              nextState: LaunchSoftwareTemplate
+              nextState: LaunchSoftwareTemplateLarge
         defaultCondition:
           transition:
             nextState: PollIssue
@@ -153,14 +167,32 @@ spec:
               useResults: true
             functionRef:
               arguments:
-                templateRef: $SECRET.software_template_ref
+                templateRef: $SECRET.swt_ref_ns_large
                 values:
                   component_id: .namespace
                   namespace_owner: .requester
               invoke: sync
               refName: launchSoftwareTemplate
             name: Launch Software Template
-        name: LaunchSoftwareTemplate
+        name: LaunchSoftwareTemplateLarge
+        transition:
+          nextState: GetSoftwareTemplate
+        type: operation
+      - actionMode: sequential
+        actions:
+          - actionDataFilter:
+              toStateData: .launchedTemplate
+              useResults: true
+            functionRef:
+              arguments:
+                templateRef: $SECRET.swt_ref_ns_small
+                values:
+                  component_id: .namespace
+                  namespace_owner: .requester
+              invoke: sync
+              refName: launchSoftwareTemplate
+            name: Launch Software Template
+        name: LaunchSoftwareTemplateSmall
         transition:
           nextState: GetSoftwareTemplate
         type: operation
@@ -226,7 +258,7 @@ spec:
               refName: createNotification
         name: SendTaskCompletedNotification
         transition:
-          nextState: CloseIssue
+          nextState: CloseIssueSwitch
         type: operation
       - actionMode: sequential
         actions:
@@ -252,8 +284,22 @@ spec:
               refName: createNotification
         name: SendTaskFailureNotification
         transition:
-          nextState: CloseIssue
+          nextState: CloseIssueSwitch
         type: operation
+      - dataConditions:
+          - condition: .size == "small"
+            end:
+              terminate: true
+            name: Namespace small
+          - condition: .size == "large"
+            name: Namespace large
+            transition:
+              nextState: CloseIssue
+        defaultCondition:
+          end:
+            terminate: true
+        name: CloseIssueSwitch
+        type: switch
       - actionMode: sequential
         actions:
           - actionDataFilter:

@@ -28,6 +28,7 @@ spec:
               databaseName: sonataflow
               databaseSchema: create-ocp-namespace-swt
         backstage:
-          softwareTemplate: template:default/namespace-large
+          softwareTemplateNamespaceLarge: template:default/namespace-large
+          softwareTemplateNamespaceSmall: template:default/namespace-small
   syncPolicy:
     automated: {}

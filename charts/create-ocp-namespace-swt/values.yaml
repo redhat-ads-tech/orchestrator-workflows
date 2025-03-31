@@ -12,10 +12,11 @@ persistence:
 
 image: 
   repository: quay.io/redhat_pe_workshop/swf-create-ocp-namespace-swt
-  tag: e8648f5
+  tag: b67f0b5
 
 backstage:
-  softwareTemplate: 
+  softwareTemplateNamespaceSmall:
+  softwareTemplateNamespaceLarge:
 
 secret:
   backstageToken: orchestrator-backstage-backend-token
