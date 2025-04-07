@@ -20,7 +20,7 @@ data:
         "requester": {
           "title": "Requester",
           "type": "string",
-          "description": "The requester of the namespace",
+          "description": "The OpenShift User ID of the requester of the namespace",
           "pattern": "^[a-z0-9]([-a-z0-9]*[a-z0-9])?$"
         },
         "size": {
