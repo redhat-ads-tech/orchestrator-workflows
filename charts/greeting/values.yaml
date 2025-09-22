@@ -1,15 +1,15 @@
 persistence:
   postgresql:
     secretRef:
-      name: sonataflow-psql-postgresql
-      userKey: postgres-username
-      passwordKey: postgres-password
+      name: backstage-psql-secret-rhdh
+      userKey: POSTGRES_USER
+      passwordKey: POSTGRES_PASSWORD
     serviceRef:
-      name: sonataflow-psql-postgresql
+      name: backstage-psql-rhdh
       port: 5432
-      databaseName: sonataflow
+      databaseName: backstage_plugin_orchestrator
       databaseSchema: greeting
 
 image: 
-  repository: quay.io/redhat_pe_workshop/serverless-workflow-greeting
-  tag: ecd5517
+  repository: quay.io/orchestrator/serverless-workflow-greeting
+  tag: aed62dee57d8b9f52caa01fd1283e161c3c89614

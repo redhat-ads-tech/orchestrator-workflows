@@ -79,7 +79,7 @@ spec:
   resources:
     configMaps:
       - configMap:
-          name: 01-greeting-resources-schemas
+          name: greeting-resources-schemas
         workflowPath: schemas
   persistence:
     postgresql:

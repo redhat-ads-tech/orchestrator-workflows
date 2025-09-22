@@ -16,4 +16,6 @@ metadata:
   labels:
     app: greeting
     sonataflow.org/workflow-app: greeting
+    app.kubernetes.io/component: serverless-workflow
+    app.kubernetes.io/name: greeting
   name: greeting-props

@@ -1,14 +1,14 @@
 persistence:
   postgresql:
     secretRef:
-      name: sonataflow-psql-postgresql
-      userKey: database-user
-      passwordKey: database-password
+      name: backstage-psql-secret-rhdh
+      userKey: POSTGRES_USER
+      passwordKey: POSTGRES_PASSWORD
     serviceRef:
-      name: sonataflow-psql-postgresql
+      name: backstage-psql-rhdh
       port: 5432
-      databaseName: sonataflow
-      databaseSchema: create-ocp-namespace-swt
+      databaseName: backstage_plugin_orchestrator
+      databaseSchema: greeting
 
 image: 
   repository: quay.io/redhat_pe_workshop/swf-create-ocp-namespace-swt
