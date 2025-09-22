@@ -12,6 +12,16 @@ entries:
     version: 0.1.0
   greeting:
   - apiVersion: v2
+    created: "2025-09-22T23:58:22.028239117Z"
+    description: A Helm chart for the greeting serverless workflow
+    digest: 689d7abaf7f0a193ccfe68bf8cf4e8137d0e1aec824d7f71f0498b11e41cd836
+    icon: https://raw.githubusercontent.com/rhdhorchestrator/rhdhorchestrator.github.io/main/assets/images/WO_black.svg
+    name: greeting
+    type: application
+    urls:
+    - https://github.com/redhat-ads-tech/orchestrator-workflows/releases/download/greeting-1.3.2/greeting-1.3.2.tgz
+    version: 1.3.2
+  - apiVersion: v2
     created: "2025-09-22T23:54:03.872594665Z"
     description: A Helm chart for the greeting serverless workflow
     digest: fb6e6eb681ab94e4fe9993d5b134d4b040a44b818a76f0164af1c28e9be5df94
@@ -31,4 +41,4 @@ entries:
     urls:
     - https://github.com/redhat-ads-tech/orchestrator-workflows/releases/download/greeting-1.3.0/greeting-1.3.0.tgz
     version: 1.3.0
-generated: "2025-09-22T23:54:03.872603342Z"
+generated: "2025-09-22T23:58:22.028253274Z"
