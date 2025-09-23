@@ -8,6 +8,7 @@ data:
     quarkus.log.category."org.apache.http".level=INFO
     quarkus.log.level=INFO
     quarkus.kie.flyway.enabled=true
+    quarkus.flyway.baseline-on-migrate=true
 kind: ConfigMap
 metadata:
   creationTimestamp: null
